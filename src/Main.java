@@ -59,6 +59,8 @@ public class Main {
 
     }
     //queries for products start from here
+    //We have a list of product objects, each containing attributes like name, price and category.
+
     /**
      *
      * queries the product on the basis of threshold
@@ -114,6 +116,9 @@ public class Main {
     public static void sortProductByName(List<Product> products) {
         products.stream().sorted((product1,product2) -> product2.getName().compareTo(product1.getName())).forEach(System.out::println);
     }
+
+    // from here order queries start
+    // We have a list of Order objects and we have to perform the operations accordingly
 
     /**
      * filters the order on the basis of order value
