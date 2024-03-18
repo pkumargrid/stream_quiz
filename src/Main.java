@@ -60,28 +60,33 @@ public class Main {
     }
 
     public static void filterByTotalOrderValue(List<Order> orders, double minTotal) {
-        orders.stream().filter(x -> x.orderItems().stream().map(Item::price).reduce(0.0,Double::sum) > minTotal).forEach(System.out::println);
+        orders.stream().filter(x -> x.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0,Double::sum) > minTotal).forEach(System.out::println);
     }
 
     public static void groupByCustomerId(List<Order> orders, double minTotal) {
-        Map<Integer, List<Order>> map = orders.stream().filter(x -> x.orderItems().stream().map(Item::price).reduce(0.0,Double::sum) > minTotal).collect(Collectors.groupingBy(Order::customerId));
+        Map<Integer, List<Order>> map = orders.stream().filter(x -> x.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0,Double::sum) > minTotal).collect(Collectors.groupingBy(Order::customerId));
         System.out.println(map);
     }
 
     public static void findHighestOrderWithinGroup(List<Order> orders, double minTotal) {
-        Map<Integer, Optional<Order>> map = orders.stream().filter(x -> x.orderItems().stream().map(Item::price).reduce(0.0,Double::sum) > minTotal).collect(Collectors.groupingBy(Order::customerId, Collectors.maxBy(Comparator.comparingDouble(o -> o.orderItems().stream().map(Item::price).reduce(0.0, Double::sum)))));
+        Map<Integer, Optional<Order>> map = orders.stream().
+                filter(x -> x.orderItems().stream().map(y -> y.quantity()*y.price()).
+                        reduce(0.0,Double::sum) > minTotal).
+                collect(
+                        Collectors.groupingBy(Order::customerId,
+                                Collectors.maxBy(Comparator.comparingDouble(o -> o.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0, Double::sum)))));
         System.out.println(map);
     }
 
     public static void totalOrderValueForEachCustomer(List<Order> orders, double minTotal) {
         Map<Integer, Double> map = orders.stream().
-                filter(x -> x.orderItems().stream().map(Item::price).reduce(0.0,Double::sum) > minTotal).
-                collect(Collectors.groupingBy(Order::customerId,Collectors.summingDouble(x -> x.orderItems().stream().mapToDouble(Item::price).reduce(0.0, Double::sum))));
+                filter(x -> x.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0,Double::sum) > minTotal).
+                collect(Collectors.groupingBy(Order::customerId,Collectors.summingDouble(x -> x.orderItems().stream().mapToDouble(y -> y.quantity()*y.price()).reduce(0.0, Double::sum))));
         System.out.println(map);
     }
 
     public static void sortByOrderValue(List<Order> orders) {
-        orders.stream().sorted(Comparator.comparingDouble(o -> o.orderItems().stream().map(Item::price).reduce(0.0, Double::sum))).forEach(System.out::println);
+        orders.stream().sorted(Comparator.comparingDouble(o -> o.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0, Double::sum))).forEach(System.out::println);
     }
 
     public static void main(String[] args) {
