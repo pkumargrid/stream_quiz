@@ -98,8 +98,9 @@ public class Main {
 //        sortByOrderValue(generateOrder());
 
         // for products
-
-        findMaxInEachGroup(generateProduct(), 100);
+//        filterProductWithPrice(generateProduct(), 100);
+//        groupByCategory(generateProduct(), 100);
+//        findMaxInEachGroup(generateProduct(), 100);
 //        totalPrice(generateProduct());
 //        sort(generateProduct());
 
