@@ -7,7 +7,7 @@ public class Main {
         Product product1 = new Product(1, "Remote",120,"Electronics");
         Product product2 = new Product(2, "laptop",90,"Electronics");
         Product product3 = new Product(3, "Pencil",130,"Stationary");
-        Product product4 = new Product(4, "Eraser",200,"Stationery");
+        Product product4 = new Product(4, "Eraser",200,"Stationary");
         Product product5 = new Product(5, "Bulb",30,"Electrical");
         return List.of(product1, product2, product3, product4, product5);
     }
@@ -98,6 +98,7 @@ public class Main {
 //        sortByOrderValue(generateOrder());
 
         // for products
+
         findMaxInEachGroup(generateProduct(), 100);
 //        totalPrice(generateProduct());
 //        sort(generateProduct());
