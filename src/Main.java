@@ -4,11 +4,11 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static List<Product> generateProduct() {
-        Product product1 = new Product(1, "Remote",100,"Electronics");
-        Product product2 = new Product(2, "laptop",100,"Electronics");
-        Product product3 = new Product(3, "Pencil",100,"Stationary");
-        Product product4 = new Product(4, "Eraser",100,"Stationery");
-        Product product5 = new Product(5, "Bulb",100,"Electrical");
+        Product product1 = new Product(1, "Remote",120,"Electronics");
+        Product product2 = new Product(2, "laptop",90,"Electronics");
+        Product product3 = new Product(3, "Pencil",130,"Stationary");
+        Product product4 = new Product(4, "Eraser",200,"Stationery");
+        Product product5 = new Product(5, "Bulb",30,"Electrical");
         return List.of(product1, product2, product3, product4, product5);
     }
 
@@ -37,16 +37,16 @@ public class Main {
     }
 
     public static void filterProductWithPrice(List<Product> products, double threshold) {
-        products.stream().filter(x -> x.getPrice() < threshold).forEach(System.out::println);
+        products.stream().filter(x -> x.getPrice() > threshold).forEach(System.out::println);
     }
 
-    public static void groupByCategory(List<Product> products) {
-        Map<String, List<Product>> map = products.stream().collect(Collectors.groupingBy(Product::getCategory));
+    public static void groupByCategory(List<Product> products, double threshold) {
+        Map<String, List<Product>> map = products.stream().filter(x -> x.getPrice() > threshold).collect(Collectors.groupingBy(Product::getCategory));
         System.out.println(map);
     }
 
-    public static void findMaxInEachGroup(List<Product> products) {
-        Map<String, Optional<Product>> map = products.stream().collect(Collectors.groupingBy(Product::getCategory,
+    public static void findMaxInEachGroup(List<Product> products, double threshold) {
+        Map<String, Optional<Product>> map = products.stream().filter(x -> x.getPrice() > threshold).collect(Collectors.groupingBy(Product::getCategory,
                 Collectors.maxBy(Comparator.comparing(Product::getPrice))));
         System.out.println(map);
     }
@@ -90,9 +90,17 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        // for orders
+//        filterByTotalOrderValue(generateOrder(), 300);
+//        groupByCustomerId(generateOrder(), 300);
 //        findHighestOrderWithinGroup(generateOrder(), 300);
-//        sortByOrderValue(generateOrder());
-//            groupByCustomerId(generateOrder(), 300);
 //        totalOrderValueForEachCustomer(generateOrder(), 300);
+//        sortByOrderValue(generateOrder());
+
+        // for products
+        findMaxInEachGroup(generateProduct(), 100);
+//        totalPrice(generateProduct());
+//        sort(generateProduct());
+
     }
 }
