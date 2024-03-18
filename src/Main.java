@@ -37,16 +37,16 @@ public class Main {
     }
 
     public static void filterProductWithPrice(List<Product> products, double threshold) {
-        products.stream().filter(x -> x.getPrice() > threshold).forEach(System.out::println);
+        products.stream().filter(product -> product.getPrice() > threshold).forEach(System.out::println);
     }
 
     public static void groupByCategory(List<Product> products, double threshold) {
-        Map<String, List<Product>> map = products.stream().filter(x -> x.getPrice() > threshold).collect(Collectors.groupingBy(Product::getCategory));
+        Map<String, List<Product>> map = products.stream().filter(product -> product.getPrice() > threshold).collect(Collectors.groupingBy(Product::getCategory));
         System.out.println(map);
     }
 
     public static void findMaxInEachGroup(List<Product> products, double threshold) {
-        Map<String, Optional<Product>> map = products.stream().filter(x -> x.getPrice() > threshold).collect(Collectors.groupingBy(Product::getCategory,
+        Map<String, Optional<Product>> map = products.stream().filter(product -> product.getPrice() > threshold).collect(Collectors.groupingBy(Product::getCategory,
                 Collectors.maxBy(Comparator.comparing(Product::getPrice))));
         System.out.println(map);
     }
@@ -55,38 +55,45 @@ public class Main {
         System.out.println(products.stream().map(Product::getPrice).reduce(0.0,Double::sum));
     }
 
-    public static void sort(List<Product> products) {
-        products.stream().sorted((o1,o2) -> o2.getName().compareTo(o1.getName())).forEach(System.out::println);
+    public static void sortProductByName(List<Product> products) {
+        products.stream().sorted((product1,product2) -> product2.getName().compareTo(product1.getName())).forEach(System.out::println);
     }
 
     public static void filterByTotalOrderValue(List<Order> orders, double minTotal) {
-        orders.stream().filter(x -> x.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0,Double::sum) > minTotal).forEach(System.out::println);
+        orders.stream().filter(order -> order.orderItems().stream().map(item -> item.quantity()*item.price()).reduce(0.0,Double::sum) > minTotal).forEach(System.out::println);
     }
 
     public static void groupByCustomerId(List<Order> orders, double minTotal) {
-        Map<Integer, List<Order>> map = orders.stream().filter(x -> x.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0,Double::sum) > minTotal).collect(Collectors.groupingBy(Order::customerId));
+        Map<Integer, List<Order>> map = orders.stream().
+                filter(order -> order.orderItems().stream().map(item -> item.quantity()*item.price()).reduce(0.0,Double::sum) > minTotal).
+                collect(Collectors.groupingBy(Order::customerId));
         System.out.println(map);
     }
 
     public static void findHighestOrderWithinGroup(List<Order> orders, double minTotal) {
         Map<Integer, Optional<Order>> map = orders.stream().
-                filter(x -> x.orderItems().stream().map(y -> y.quantity()*y.price()).
+                filter(order -> order.orderItems().stream().map(item -> item.quantity()*item.price()).
                         reduce(0.0,Double::sum) > minTotal).
                 collect(
                         Collectors.groupingBy(Order::customerId,
-                                Collectors.maxBy(Comparator.comparingDouble(o -> o.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0, Double::sum)))));
+                                Collectors.maxBy(
+                                        Comparator.comparingDouble(order -> order.orderItems().stream().map(item -> item.quantity()*item.price()).reduce(0.0, Double::sum)))));
         System.out.println(map);
     }
 
     public static void totalOrderValueForEachCustomer(List<Order> orders, double minTotal) {
         Map<Integer, Double> map = orders.stream().
-                filter(x -> x.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0,Double::sum) > minTotal).
-                collect(Collectors.groupingBy(Order::customerId,Collectors.summingDouble(x -> x.orderItems().stream().mapToDouble(y -> y.quantity()*y.price()).reduce(0.0, Double::sum))));
+                filter(order -> order.orderItems().stream().map(item -> item.quantity()*item.price()).reduce(0.0,Double::sum) > minTotal).
+                collect(
+                        Collectors.groupingBy(Order::customerId,
+                                Collectors.summingDouble(order -> order.orderItems().stream().mapToDouble(item -> item.quantity()*item.price()).reduce(0.0, Double::sum))));
         System.out.println(map);
     }
 
     public static void sortByOrderValue(List<Order> orders) {
-        orders.stream().sorted(Comparator.comparingDouble(o -> o.orderItems().stream().map(y -> y.quantity()*y.price()).reduce(0.0, Double::sum))).forEach(System.out::println);
+        orders.stream().
+                sorted(Comparator.comparingDouble(order -> order.orderItems().stream().map(item -> item.quantity()*item.price()).
+                        reduce(0.0, Double::sum))).forEach(System.out::println);
     }
 
     public static void main(String[] args) {
@@ -102,7 +109,7 @@ public class Main {
 //        groupByCategory(generateProduct(), 100);
 //        findMaxInEachGroup(generateProduct(), 100);
 //        totalPrice(generateProduct());
-//        sort(generateProduct());
+//        sortProductByName(generateProduct());
 
     }
 }
