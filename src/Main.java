@@ -183,6 +183,10 @@ public class Main {
                         reduce(0.0, Double::sum))).forEach(System.out::println);
     }
 
+    /**
+     * main method from where all queries are tested
+     * @param args for command line arguments
+     */
     public static void main(String[] args) {
         // for orders
 //        filterByTotalOrderValue(generateOrder(), 300);
