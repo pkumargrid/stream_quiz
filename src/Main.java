@@ -20,7 +20,7 @@ public class Main {
         dummy = List.of(new Item(1,"item1",2,200),
                 new Item(2,"item2",5,120), new Item(3,"item3",5,120),
                 new Item(4,"item4",5,175));
-        Order order2 = new Order(2, 3, new ArrayList<>(dummy));
+        Order order2 = new Order(2, 2, new ArrayList<>(dummy));
         dummy = List.of(new Item(1,"item1",2,200),
                 new Item(2,"item2",5,120), new Item(3,"item3",5,120),
                 new Item(4,"item4",5,175));
@@ -28,11 +28,11 @@ public class Main {
         dummy = List.of(new Item(1,"item1",2,200),
                 new Item(2,"item2",5,120), new Item(3,"item3",5,120),
                 new Item(4,"item4",5,175));
-        Order order4 = new Order(4, 5, new ArrayList<>(dummy));
+        Order order4 = new Order(4, 4, new ArrayList<>(dummy));
         dummy = List.of(new Item(1,"item1",2,250),
                 new Item(2,"item2",5,95), new Item(3,"item3",5,300),
                 new Item(4,"item4",5,200));
-        Order order5 = new Order(5, 6, new ArrayList<>(dummy));
+        Order order5 = new Order(5, 5, new ArrayList<>(dummy));
         return List.of(order1, order2, order3, order4, order5);
     }
 
@@ -76,7 +76,10 @@ public class Main {
     }
 
     public static void totalOrderValueForEachCustomer(List<Order> orders, double minTotal) {
-        Map<Integer, List<Double>> map = orders.stream().filter(x -> x.orderItems().stream().map(Item::price).reduce(0.0,Double::sum) > minTotal).collect(Collectors.groupingBy(Order::customerId,Collectors.mapping(x -> x.orderItems().stream().collect(Collectors.summingDouble(y-> y.price())),Collectors.toList())));
+        Map<Integer, List<Double>> map = orders.stream().
+                filter(x -> x.orderItems().stream().map(Item::price).reduce(0.0,Double::sum) > minTotal).
+                collect(Collectors.groupingBy(Order::customerId,Collectors.mapping(x -> x.orderItems().stream().
+                        collect(Collectors.summingDouble(y-> y.price())),Collectors.toList())));
         System.out.println(map);
     }
 
@@ -87,5 +90,6 @@ public class Main {
     public static void main(String[] args) {
 //        findHighestOrderWithinGroup(generateOrder(), 300);
 //        sortByOrderValue(generateOrder());
+//            groupByCustomerId(generateOrder(), 300);
     }
 }
