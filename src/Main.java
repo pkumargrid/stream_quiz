@@ -56,9 +56,7 @@ public class Main {
     }
 
     public static void sort(List<Product> products) {
-        products.stream().sorted((o1,o2) -> {
-            return o2.getName().compareTo(o1.getName());
-        }).forEach(System.out::println);
+        products.stream().sorted((o1,o2) -> o2.getName().compareTo(o1.getName())).forEach(System.out::println);
     }
 
     public static void filterByTotalOrderValue(List<Order> orders, double minTotal) {
@@ -76,10 +74,9 @@ public class Main {
     }
 
     public static void totalOrderValueForEachCustomer(List<Order> orders, double minTotal) {
-        Map<Integer, List<Double>> map = orders.stream().
+        Map<Integer, Double> map = orders.stream().
                 filter(x -> x.orderItems().stream().map(Item::price).reduce(0.0,Double::sum) > minTotal).
-                collect(Collectors.groupingBy(Order::customerId,Collectors.mapping(x -> x.orderItems().stream().
-                        collect(Collectors.summingDouble(y-> y.price())),Collectors.toList())));
+                collect(Collectors.groupingBy(Order::customerId,Collectors.summingDouble(x -> x.orderItems().stream().mapToDouble(Item::price).reduce(0.0, Double::sum))));
         System.out.println(map);
     }
 
@@ -91,5 +88,6 @@ public class Main {
 //        findHighestOrderWithinGroup(generateOrder(), 300);
 //        sortByOrderValue(generateOrder());
 //            groupByCustomerId(generateOrder(), 300);
+//        totalOrderValueForEachCustomer(generateOrder(), 300);
     }
 }
