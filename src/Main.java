@@ -1,6 +1,9 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Paper 1
+ */
 public class Main {
 
     /**
